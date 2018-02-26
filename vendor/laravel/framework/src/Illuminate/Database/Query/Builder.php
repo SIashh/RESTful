@@ -583,7 +583,7 @@ class Builder
      *
      * @throws \InvalidArgumentException
      */
-    protected function prepareValueAndOperator($value, $operator, $useDefault = false)
+    public function prepareValueAndOperator($value, $operator, $useDefault = false)
     {
         if ($useDefault) {
             return [$operator, '='];
@@ -631,6 +631,10 @@ class Builder
      */
     public function orWhere($column, $operator = null, $value = null)
     {
+        list($value, $operator) = $this->prepareValueAndOperator(
+            $value, $operator, func_num_args() == 2
+        );
+
         return $this->where($column, $operator, $value, 'or');
     }
 
@@ -985,6 +989,10 @@ class Builder
      */
     public function orWhereDate($column, $operator, $value)
     {
+        list($value, $operator) = $this->prepareValueAndOperator(
+            $value, $operator, func_num_args() == 2
+        );
+
         return $this->whereDate($column, $operator, $value, 'or');
     }
 
@@ -993,12 +1001,16 @@ class Builder
      *
      * @param  string  $column
      * @param  string   $operator
-     * @param  int   $value
+     * @param  mixed   $value
      * @param  string   $boolean
      * @return \Illuminate\Database\Query\Builder|static
      */
-    public function whereTime($column, $operator, $value, $boolean = 'and')
+    public function whereTime($column, $operator, $value = null, $boolean = 'and')
     {
+        list($value, $operator) = $this->prepareValueAndOperator(
+            $value, $operator, func_num_args() == 2
+        );
+
         return $this->addDateBasedWhere('Time', $column, $operator, $value, $boolean);
     }
 
@@ -1007,11 +1019,15 @@ class Builder
      *
      * @param  string  $column
      * @param  string   $operator
-     * @param  int   $value
+     * @param  mixed   $value
      * @return \Illuminate\Database\Query\Builder|static
      */
-    public function orWhereTime($column, $operator, $value)
+    public function orWhereTime($column, $operator, $value = null)
     {
+        list($value, $operator) = $this->prepareValueAndOperator(
+            $value, $operator, func_num_args() == 2
+        );
+
         return $this->whereTime($column, $operator, $value, 'or');
     }
 
@@ -1075,7 +1091,7 @@ class Builder
      * @param  string  $type
      * @param  string  $column
      * @param  string  $operator
-     * @param  int  $value
+     * @param  mixed  $value
      * @param  string  $boolean
      * @return $this
      */
@@ -1233,6 +1249,43 @@ class Builder
         $this->addBinding($query->getBindings(), 'where');
 
         return $this;
+    }
+
+    /**
+     * Adds a where condition using row values.
+     *
+     * @param  array   $columns
+     * @param  string  $operator
+     * @param  array   $values
+     * @param  string  $boolean
+     * @return $this
+     */
+    public function whereRowValues($columns, $operator, $values, $boolean = 'and')
+    {
+        if (count($columns) != count($values)) {
+            throw new InvalidArgumentException('The number of columns must match the number of values');
+        }
+
+        $type = 'RowValues';
+
+        $this->wheres[] = compact('type', 'columns', 'operator', 'values', 'boolean');
+
+        $this->addBinding($values);
+
+        return $this;
+    }
+
+    /**
+     * Adds a or where condition using row values.
+     *
+     * @param  array   $columns
+     * @param  string  $operator
+     * @param  array   $values
+     * @return $this
+     */
+    public function orWhereRowValues($columns, $operator, $values)
+    {
+        return $this->whereRowValues($columns, $operator, $values, 'or');
     }
 
     /**
@@ -1947,6 +2000,16 @@ class Builder
     }
 
     /**
+     * Determine if no rows exist for the current query.
+     *
+     * @return bool
+     */
+    public function doesntExist()
+    {
+        return ! $this->exists();
+    }
+
+    /**
      * Retrieve the "count" result of the query.
      *
      * @param  string  $columns
@@ -2456,8 +2519,8 @@ class Builder
             return $this->dynamicWhere($method, $parameters);
         }
 
-        $className = static::class;
+        $class = static::class;
 
-        throw new BadMethodCallException("Call to undefined method {$className}::{$method}()");
+        throw new BadMethodCallException("Method {$class}::{$method} does not exist.");
     }
 }

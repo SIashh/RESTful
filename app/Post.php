@@ -6,13 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ["nom", "domaine", "niveauetude", "datedebut", "duree", "lien"];
+    protected $fillable = ["commentaire", "note"];
     static $rules = [
-    	'nom' => 'required',
-    	'domaine' => 'required',
-    	'niveauetude' => 'required',
-    	'datedebut' => 'required',
-    	'duree' => 'required',
-    	'lien' => 'required',
+    	'commentaire' => 'required',
+    	'note' => 'required',
     ];
 }

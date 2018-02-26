@@ -11,18 +11,14 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Post::class, 10)->create();
         /*
+        factory(App\Post::class, 10)->create();
+        */
     	foreach (range(1, 10) as $index) {
     		DB::table('posts')->insert([
-            'nom' => "Offre $index" ,
-            'domaine' => "Informatique" ,
-            'niveauetude' => "DUT" ,
-            'datedebut' => "09/04/18" ,
-            'duree' => "10 semaines" ,
-            'lien' => "none" ,
+            'commentaire' => "J'apprécie" ,
+            'note' => "3.5" ,
         ]);
     	}
-        */
     }
 }

@@ -20,4 +20,3 @@ Route::name('posts.store')->post('posts','PostsController@store');
 Route::name('posts.update')->put('posts/{posts}','PostsController@update'); 
 
 Route::name('posts.destroy')->delete('posts/{posts}','PostsController@destroy'); 
-

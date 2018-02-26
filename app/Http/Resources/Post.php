@@ -16,12 +16,8 @@ class Post extends Resource
     {
         return [
             'id' => $this->id,
-            'nom' => $this->nom,
-            'domaine' => $this->domaine,
-            'niveauetude' => $this->niveauetude,
-            'datedebut' => $this->datedebut,
-            'duree' => $this->duree,
-            'lien' => $this->lien
+            'commentaire' => $this->commentaire,
+            'note' => $this->note,
         ];
     }
 }

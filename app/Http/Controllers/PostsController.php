@@ -45,12 +45,8 @@ class PostsController extends Controller
         }
 
         $post->id = $request->input('post_id');
-        $post->nom = $request->input('nom');
-        $post->domaine = $request->input('domaine');
-        $post->niveauetude = $request->input('niveauetude');
-        $post->datedebut = $request->input('datedebut');
-        $post->duree = $request->input('duree');
-        $post->lien = $request->input('lien');
+        $post->commentaire = $request->input('commentaire');
+        $post->note = $request->input('note');
 
         if($post->save()) {
             return new PostResource($post);
@@ -98,12 +94,8 @@ class PostsController extends Controller
         }
 
         $post->id = $id;
-        $post->nom = $request->input('nom');
-        $post->domaine = $request->input('domaine');
-        $post->niveauetude = $request->input('niveauetude');
-        $post->datedebut = $request->input('datedebut');
-        $post->duree = $request->input('duree');
-        $post->lien = $request->input('lien');
+        $post->commentaire = $request->input('commentaire');
+        $post->note = $request->input('note');
 
         if($post->save()) {
             return new PostResource($post);
