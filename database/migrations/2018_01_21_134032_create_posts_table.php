@@ -15,12 +15,8 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom');
-            $table->string('domaine');
-            $table->string('niveauetude');
-            $table->string('datedebut');
-            $table->string('duree');
-            $table->string('lien');
+            $table->string('commentaire');
+            $table->string('note');
             $table->timestamps();
         });
     }
