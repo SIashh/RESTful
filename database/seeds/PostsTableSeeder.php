@@ -11,6 +11,8 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
+        factory(App\Post::class, 10)->create();
+        /*
     	foreach (range(1, 10) as $index) {
     		DB::table('posts')->insert([
             'nom' => "Offre $index" ,
@@ -21,6 +23,6 @@ class PostsTableSeeder extends Seeder
             'lien' => "none" ,
         ]);
     	}
-        
+        */
     }
 }
