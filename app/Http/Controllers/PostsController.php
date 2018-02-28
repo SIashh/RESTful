@@ -21,7 +21,7 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
         $posts = Post::get();
         return PostResource::collection($posts);  
@@ -51,6 +51,7 @@ class PostsController extends Controller
         }
 
         $post->id = $request->input('post_id');
+        //Récuperer le nom du restaurant via API
         $post->commentaire = $request->input('commentaire');
         $post->note = $request->input('note');
 
@@ -96,6 +97,7 @@ class PostsController extends Controller
      * une erreur 400 indiquant que l'id n'a pas était trouvé. 
      *
      * @param  Request $request
+     * @param  String $nom_restaurant
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
@@ -104,7 +106,6 @@ class PostsController extends Controller
         try 
         {
             $post = Post::findOrFail($id);
-
             $v = Validator::make(Input::all(), Post::$rules);
             if($v->fails()) {
                 if($request->isJson()) {
@@ -135,6 +136,7 @@ class PostsController extends Controller
      * renvoie sous format JSON une erreur 400 disant que l'id 
      * n'existe pas
      *
+     * @param  String $nom_restaurant
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
