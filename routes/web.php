@@ -35,8 +35,10 @@ Route::name('restaurants.update')->put('restaurants/{id_restaurant}/comments/{id
 
 Route::name('restaurants.destroy')->delete('restaurants/{id_restaurant}/comments/{id_comments}','RestaurantController@destroy'); 
 
+Route::name('restaurants.register')->post('register','RestaurantController@register'); 
+
 /* AUTHENTIFICATION */
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

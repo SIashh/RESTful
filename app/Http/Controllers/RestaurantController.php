@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Commentaire;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Http\Resources\Commentaire as CommentaireResource;
@@ -147,5 +148,21 @@ class RestaurantController extends Controller
                 'Error' => 'Id not found'
             ], 400);
         }
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $user = new User;
+
+        return User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
     }
 }
